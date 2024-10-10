@@ -1,0 +1,75 @@
+Tudor Maria - Elena, 311CA
+
+1. Markov is comming ...
+
+The first function I had to implement, parse_labyrinth reads the data needed
+from a file, in preparation for the function get_adjacency_matrix to take care
+of the actual codification of the labyrinth.
+I used dec2bin and reshape to get an array that contains the representation in 
+binary of the number read earlier. To complete the adjacency matrix, I proceeded
+as follows: I considered every 0 to mean there is no wall in that place at west /
+east / south / north (depending on its position in the binary form) and that
+resulted in a 1 in the adjacency matrix. If the cell was on the margins of the
+labyrinth, then a wall missing meant it was either a WIN or LOSE state depending
+on the case (the last two columns in the adjacency matrix).
+Function get_link_matrix finds all the nonzero rows and then checks each of them 
+for the nonzero columns that will create the value of the probability needed 
+for the link matrix.
+Functions get_Jacobi_parameters and perform_iterative help solve the system of 
+linear equations created using the link matrix and the probabilities for winning,
+using the Jacobi method.
+Function heuristic_greedy gets a position and then goes through the labirinth to
+find a path for winning by checking all of the neighbours that weren't visited 
+and also choosing one that has the highest probability to reach a winning state if
+chosen. The algorithm uses a stack for the positions (using a DFS algortihm), 
+because once one of them is deemed unfit, it is taken out of the path array.
+Function decode_path translates the "path" that is received where each cell in
+the matrix has a number based on its position in the labyrinth to the actual
+indexes of their lines and columns in the original matrix.
+The thing that gave me the most difficulty while working on this problem was
+understanding how to create the adjacency matrix, as I had to understand the
+rare matrix concept and how to use it in Octave and also get familiar with 
+working in Octave as a whole.
+
+2. Linear regression
+
+This task consisted out of making predictions and calculating errors between
+these predictions and their actual values.
+For reading the elements of the matrix from the file in the first function,
+parse_data_set_file, I used the cell function to create a matrix that can contain
+both numbers and strings. 
+Function prepare_for_regression transforms the strings read into the codification 
+given for each of them if they are words and uses the str2num function to convert 
+the numbers.
+In function parse_csv file, I first find out how many columns and lines the file 
+has. Using textscan with coma as a delimiter puts the whole text on one line in 
+this case.
+Function linear_regression_cost_function calculates the error between the actual 
+cost and the predicted one with the given formulas.
+Function gradient_descent optimises the cost function using an iterative method.
+The weights are initialised with zero at the first iteration, then change after 
+calculating the gradient.
+Function normal_equation uses the conjugate gradient to calculate the weights. 
+The equation that is being solved is Ax = b, where I considered A = X' * X = 
+FeatureMatrix' * FeatureMatrix and b = X' * Y = FeatureMatrix' * Y. Function
+conjugate_gradient implements the method as was described in the given code.
+Function lasso_regression_cost_function and ridge_regression_cost_function are
+very similar in the formulas used and they use regularisation to generalise the
+predictions.
+The hardest thing with this task was figuring out how to work with a matrix of
+both strings and numbers, but also how to make the algorithm more efficient, as
+using "for" loops takes a lot of time for all the operations between matrixes.
+
+3. MNIST 101
+
+Functions load_dataset prepares the data that will be used for the function
+split_dataset. This one uses randperm to shuffle the lines' indexes for the
+two sets of testing and training.
+Function initialize_weights generates a matrix that contains random numbers 
+in the interval wanted.
+Function cost_function calculates the activations of the layers, errors and then
+the gradient and the cost using the formulas given. The hardest thing here was 
+figuring out how to work with the whole matrix and not with a line, as was given
+in the example.
+Function predict classes calculates the activation of the layer same as earlier
+and then calculates the classes by returning the indexes of the maximum values.
